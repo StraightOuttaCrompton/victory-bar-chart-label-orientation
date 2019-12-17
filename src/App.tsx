@@ -1,5 +1,6 @@
 import React from "react";
 import ExampleBarChart from "./ExampleBarChart";
+// import ExampleBarChart from "./AlternativeSolution/ExampleBarChart";
 
 function App() {
     return (

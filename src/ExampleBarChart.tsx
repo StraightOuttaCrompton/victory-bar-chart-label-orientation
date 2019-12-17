@@ -39,8 +39,18 @@ export default function ExampleBarChart(props: IProps) {
                     tickLabels: { stroke: "none", fill: "transparent" }
                 }}
             />
-            {ExampleBar({ id: "negativeData", barWidth, data: negativeData, type: "negative" })}
-            {ExampleBar({ id: "positiveData", barWidth, data: positiveData, type: "positive" })}
+            {ExampleBar({
+                id: "negativeData",
+                barWidth,
+                data: negativeData,
+                type: "negative"
+            })}
+            {ExampleBar({
+                id: "positiveData",
+                barWidth,
+                data: positiveData,
+                type: "positive"
+            })}
         </VictoryChart>
     );
 }
@@ -55,7 +65,7 @@ interface IChangeBarProps {
 function ExampleBar(props: IChangeBarProps) {
     const { id, data, type, barWidth } = props;
 
-    const orientation = type === "positive" ? "right" : "left";
+    const orientation = type === "positive" ? "left" : "right";
 
     const maxY = Math.max(...data.map(d => Math.abs(d.y)));
     const parsedData = data.map(d => {
@@ -68,22 +78,21 @@ function ExampleBar(props: IChangeBarProps) {
         };
     });
 
-    console.log(orientation)
-
     return [
         <VictoryAxis
             key={`${id}-axis`}
             style={{
                 axis: { stroke: "none" }
             }}
+            tickFormat={(t: string) => {
+                const labelInDataSet = parsedData
+                    .map(datum => datum.x)
+                    .includes(t);
+
+                return labelInDataSet ? t : "";
+            }}
             orientation={orientation}
-            // orientation={"left"}
-            // orientation={"right"}
         />,
-        <VictoryBar
-            key={`${id}-bar`}
-            barWidth={barWidth}
-            data={parsedData}
-        />
+        <VictoryBar key={`${id}-bar`} barWidth={barWidth} data={parsedData} />
     ];
 }
